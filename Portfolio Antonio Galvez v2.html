@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Antonio Gálvez — Creative Director / Filmmaker / Music Video Director</title>
+<meta name="description" content="Antonio Gálvez. Creative Director, Filmmaker, Music Video Director. Almería, España. Archivo audiovisual 2026." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+/* =====================================================================
+   SISTEMA — la identidad vive en estas tres capas:
+   1) TOKENS ESTRUCTURALES (retícula, escala tipográfica, ritmo)  → fijos
+   2) TOKENS DE COLOR (paper / ink / accent)                      → variables
+   3) COMPOSICIÓN (asimetría, jerarquía, aire)                    → fija
+   Cada capítulo de proyecto redefine (2). Nada más. Si mañana se
+   eliminan todos los colores, (1) y (3) sostienen la identidad.
+   ===================================================================== */
+:root{
+  /* --- capa 2: tema base neutro --- */
+  --paper:#f2f1ee; --ink:#0d0d0c; --accent:#0d0d0c;
+  --ink-70:color-mix(in oklab, var(--ink) 70%, var(--paper));
+  --ink-45:color-mix(in oklab, var(--ink) 45%, var(--paper));
+  --ink-18:color-mix(in oklab, var(--ink) 18%, var(--paper));
+  --ink-08:color-mix(in oklab, var(--ink) 8%, var(--paper));
+  /* --- capa 1: estructura --- */
+  --f-grot:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --f-serif:"Instrument Serif",Georgia,serif;
+  --f-mono:"Space Mono",ui-monospace,monospace;
+  --gut:clamp(16px,3.4vw,52px);
+  --rule:1px;
+  --bleed:clamp(48px,10vh,140px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-grot);font-size:16px;font-weight:400;line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+::selection{background:var(--ink);color:var(--paper)}
+h1,h2,h3,h4,p,figure,blockquote{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+
+/* ---------- primitivas tipográficas ---------- */
+.mono{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;line-height:1.6}
+.mono--sm{font-size:10px;letter-spacing:.2em}
+.serif{font-family:var(--f-serif);font-weight:400}
+.it{font-family:var(--f-serif);font-style:italic;font-weight:400}
+/* grotesca gigante — el elemento gráfico principal */
+.grot{font-family:var(--f-grot);font-weight:800;font-stretch:118%;text-transform:uppercase;line-height:.82;letter-spacing:-.025em}
+/* condensada — etiquetas y listas como grafismo */
+.cond{font-family:var(--f-grot);font-weight:700;font-stretch:70%;text-transform:uppercase;line-height:.92;letter-spacing:.01em}
+.rule{height:var(--rule);background:var(--ink-18);width:100%}
+
+/* ---------- retícula ---------- */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:0 var(--gut)}
+.pad{padding-inline:var(--gut)}
+section{position:relative}
+
+/* =====================================================================
+   REVEALS — texto que aparece por líneas, media que entra en escala.
+   Discretos, sin rebotes.
+   ===================================================================== */
+.ln{display:block;overflow:hidden}
+.ln>*{display:block;transform:translateY(108%);transition:transform 1.05s cubic-bezier(.16,.84,.24,1)}
+.is-in .ln>*,.ln.is-in>*{transform:none}
+.ln:nth-child(2)>*{transition-delay:.07s}
+.ln:nth-child(3)>*{transition-delay:.14s}
+.up{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s cubic-bezier(.16,.84,.24,1)}
+.up.is-in{opacity:1;transform:none}
+.up[data-d="1"]{transition-delay:.1s}.up[data-d="2"]{transition-delay:.2s}.up[data-d="3"]{transition-delay:.3s}.up[data-d="4"]{transition-delay:.4s}
+.scale-in{clip-path:inset(12% 6% 12% 6%);transform:scale(1.04);transition:clip-path 1.3s cubic-bezier(.16,.84,.24,1),transform 1.6s cubic-bezier(.16,.84,.24,1)}
+.scale-in.is-in{clip-path:inset(0 0 0 0);transform:none}
+@media (prefers-reduced-motion:reduce){
+  .ln>*,.up,.scale-in{transform:none!important;opacity:1!important;clip-path:none!important;transition:none!important}
+  .ticker__row{animation:none!important}
+}
+
+/* =====================================================================
+   NAV — barra índice. Adopta el tema del capítulo visible (JS).
+   ===================================================================== */
+.nav{position:fixed;inset:0 0 auto;z-index:80;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px var(--gut);background:color-mix(in oklab,var(--nav-paper,var(--paper)) 88%,transparent);color:var(--nav-ink,var(--ink));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:var(--rule) solid color-mix(in oklab,var(--nav-ink,var(--ink)) 16%,transparent);transition:background .6s ease,color .6s ease,border-color .6s ease}
+.nav__id{font-family:var(--f-grot);font-weight:800;font-stretch:78%;text-transform:uppercase;font-size:13px;letter-spacing:.06em}
+.nav__mid{display:flex;gap:clamp(14px,2.4vw,34px)}
+.nav__mid a{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:4px 0;position:relative}
+.nav__mid a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,.84,.24,1)}
+.nav__mid a:hover::after,.nav__mid a[aria-current="true"]::after{transform:scaleX(1)}
+.nav__now{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.6;white-space:nowrap}
+.nav__burger{display:none;width:34px;height:34px;align-items:center;justify-content:center}
+.nav__burger span{display:block;width:20px;height:1px;background:currentColor;position:relative}
+.nav__burger span::before,.nav__burger span::after{content:"";position:absolute;left:0;right:0;height:1px;background:currentColor;transition:top .3s,transform .3s}
+.nav__burger span::before{top:-6px}.nav__burger span::after{top:6px}
+.nav.is-open .nav__burger span{background:transparent}
+.nav.is-open .nav__burger span::before{top:0;transform:rotate(45deg)}
+.nav.is-open .nav__burger span::after{top:0;transform:rotate(-45deg)}
+@media (max-width:820px){
+  .nav__now{display:none}
+  .nav__burger{display:flex}
+  .nav__mid{position:fixed;inset:0;flex-direction:column;justify-content:center;gap:26px;padding:0 var(--gut);background:var(--nav-paper,var(--paper));transform:translateY(-101%);transition:transform .6s cubic-bezier(.7,0,.2,1)}
+  .nav.is-open .nav__mid{transform:none}
+  .nav__mid a{font-family:var(--f-grot);font-weight:800;font-stretch:75%;font-size:34px;letter-spacing:-.01em}
+}
+
+/* =====================================================================
+   COVER — asimetría: retrato en columna izquierda, nombre desbordando.
+   ===================================================================== */
+.cover{padding-top:clamp(84px,12vh,132px);padding-bottom:clamp(28px,6vh,64px);min-height:100svh;display:flex;flex-direction:column;justify-content:space-between}
+.cover__top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding-bottom:14px;border-bottom:var(--rule) solid var(--ink-18)}
+.cover__top .r{text-align:right}
+.cover__body{margin-top:clamp(20px,4vh,44px);align-items:end}
+.cover__fig{grid-column:1/span 5;position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--ink-08)}
+.cover__fig img{width:100%;height:100%;object-fit:cover;object-position:28% 40%;filter:grayscale(1) contrast(1.06)}
+.cover__fig figcaption{position:absolute;left:12px;bottom:10px;color:var(--paper);mix-blend-mode:difference}
+.cover__type{grid-column:5/span 8;position:relative;z-index:2;margin-left:calc(var(--gut) * -1.6)}
+.cover__name{font-size:clamp(52px,11.4vw,196px)}
+.cover__name em{font-family:var(--f-serif);font-style:italic;font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.02em}
+.cover__roles{margin-top:clamp(18px,3vh,34px);display:flex;flex-wrap:wrap;gap:8px clamp(18px,3vw,44px);border-top:var(--rule) solid var(--ink-18);padding-top:14px}
+.cover__roles li{font-family:var(--f-grot);font-weight:600;font-stretch:74%;text-transform:uppercase;font-size:clamp(13px,1.5vw,20px);letter-spacing:.03em}
+.cover__roles li span{color:var(--ink-45);font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;margin-right:8px;vertical-align:2px}
+.cover__foot{margin-top:clamp(24px,5vh,56px);display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.cover__lede{max-width:34ch;font-family:var(--f-serif);font-size:clamp(17px,1.5vw,22px);line-height:1.35;color:var(--ink-70)}
+.jump{display:inline-flex;align-items:baseline;gap:12px;font-family:var(--f-grot);font-weight:700;font-stretch:76%;text-transform:uppercase;font-size:clamp(15px,1.7vw,22px);letter-spacing:.02em;padding-bottom:6px;border-bottom:1px solid currentColor;transition:gap .35s ease}
+.jump:hover{gap:22px}
+@media (max-width:900px){
+  .cover__fig{grid-column:1/-1;aspect-ratio:3/3.4}
+  .cover__type{grid-column:1/-1;margin-left:0;margin-top:24px}
+}
+
+/* ---------- ticker (roles como grafismo) ---------- */
+.ticker{border-block:var(--rule) solid var(--ink-18);overflow:hidden;padding:12px 0}
+.ticker__row{display:flex;gap:0;width:max-content;animation:slide 46s linear infinite}
+.ticker__row span{font-family:var(--f-grot);font-weight:800;font-stretch:68%;text-transform:uppercase;font-size:clamp(24px,4.4vw,64px);letter-spacing:-.005em;padding-inline:.28em;white-space:nowrap}
+.ticker__row span:nth-child(even){font-family:var(--f-serif);font-style:italic;font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.01em;color:var(--ink-45)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* =====================================================================
+   ABOUT — B/N, titular condensado apilado + serif itálica solapando,
+   cuerpo bold tracked, collage de polaroids. (Ref. del autor.)
+   ===================================================================== */
+.about{padding-block:var(--bleed);position:relative;isolation:isolate}
+/* textura de muro, sólo tramas neutras — nada de filtro cálido */
+.about::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.5;background:
+  radial-gradient(120% 90% at 18% 8%, color-mix(in oklab,var(--ink) 10%,transparent) 0%, transparent 60%),
+  radial-gradient(90% 70% at 88% 78%, color-mix(in oklab,var(--ink) 8%,transparent) 0%, transparent 55%),
+  repeating-linear-gradient(112deg,color-mix(in oklab,var(--ink) 5%,transparent) 0 1px,transparent 1px 7px)}
+.about__stack{position:relative;margin-top:clamp(22px,4vh,52px);z-index:2}
+.about__k1{font-family:var(--f-grot);font-weight:800;font-stretch:66%;text-transform:none;font-size:clamp(30px,5.2vw,84px);line-height:.9;letter-spacing:-.01em}
+.about__k2{font-family:var(--f-grot);font-weight:900;font-stretch:62%;text-transform:none;font-size:clamp(46px,10.4vw,178px);line-height:.82;letter-spacing:-.02em;margin-top:-.06em}
+.about__k3{font-family:var(--f-grot);font-weight:800;font-stretch:62%;text-transform:none;font-size:clamp(26px,4.6vw,74px);line-height:.86;letter-spacing:-.01em;margin-top:-.02em}
+.about__vis{font-family:var(--f-serif);font-style:italic;font-weight:400;font-size:clamp(40px,8.6vw,150px);line-height:.8;letter-spacing:-.02em;display:block;margin:-.34em 0 0 clamp(60px,22vw,380px);color:var(--paper);text-shadow:0 0 1px var(--ink),0 2px 26px color-mix(in oklab,var(--ink) 55%,transparent);position:relative;z-index:3}
+.about__body{margin-top:clamp(26px,4.5vh,56px);max-width:60ch;font-weight:700;letter-spacing:.012em;font-size:clamp(14.5px,1.25vw,18px);line-height:1.55;text-align:justify;text-wrap:pretty}
+.about__body p+p{margin-top:1.15em}
+.about__body b{font-weight:900}
+/* collage de polaroids */
+.polas{position:relative;aspect-ratio:1/1.02;min-height:280px}
+.pola{position:absolute;background:color-mix(in oklab,var(--paper) 96%, var(--ink));padding:9px 9px 34px;box-shadow:0 26px 50px -18px rgba(0,0,0,.6),0 8px 18px -10px rgba(0,0,0,.5);transition:transform .7s cubic-bezier(.16,.84,.24,1)}
+.pola .ph{aspect-ratio:1/1;min-height:0;border-color:color-mix(in oklab,var(--ink) 28%,transparent)}
+.pola .ph::after{font-size:9px;background:color-mix(in oklab,var(--paper) 92%,var(--ink));color:color-mix(in oklab,var(--ink) 70%,var(--paper))}
+.pola figcaption{position:absolute;left:0;right:0;bottom:11px;text-align:center;font-family:var(--f-mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:color-mix(in oklab,var(--ink) 62%,var(--paper))}
+.pola--1{width:62%;right:4%;top:6%;transform:rotate(6deg);z-index:4}
+.pola--2{width:44%;right:34%;bottom:6%;transform:rotate(-7deg);z-index:3;filter:blur(.4px)}
+.pola--3{width:40%;right:0%;bottom:0%;transform:rotate(11deg);z-index:2;filter:blur(1.1px);opacity:.9}
+.pola:hover{transform:rotate(0deg) translateY(-8px)}
+@media (max-width:900px){.polas{aspect-ratio:1/.86;margin-top:36px}}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding-bottom:12px;border-bottom:var(--rule) solid var(--ink-18);flex-wrap:wrap}
+.about__q{grid-column:1/span 7;font-size:clamp(46px,8.4vw,132px);margin-top:clamp(22px,4vh,52px)}
+.about__q b{font-weight:800}
+.about__q em{font-family:var(--f-serif);font-style:italic;font-weight:400;font-stretch:100%;text-transform:none}
+.about__cols{margin-top:clamp(28px,5vh,64px);row-gap:40px}
+.about__lede{grid-column:1/span 5;font-family:var(--f-serif);font-size:clamp(21px,2.3vw,34px);line-height:1.24;text-wrap:pretty}
+.about__txt{grid-column:7/span 4;color:var(--ink-70);font-size:15.5px;line-height:1.72;max-width:44ch}
+.about__txt p+p{margin-top:1.05em}
+.about__txt b{color:var(--ink);font-weight:600}
+.about__note{grid-column:11/span 2;color:var(--ink-45);border-left:var(--rule) solid var(--ink-18);padding-left:16px}
+.roles-table{margin-top:clamp(40px,7vh,88px);border-top:var(--rule) solid var(--ink-18)}
+.roles-table li{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:baseline;padding:14px 0;border-bottom:var(--rule) solid var(--ink-18);transition:padding-left .4s cubic-bezier(.16,.84,.24,1),background-color .35s ease,color .35s ease}
+.roles-table li:hover{padding-left:14px;background:#ffffff;color:#0a0a0a}
+.roles-table li:hover .n,.roles-table li:hover .en{color:#0a0a0a}
+.roles-table .n{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-45)}
+.roles-table .t{font-family:var(--f-grot);font-weight:700;font-stretch:72%;text-transform:uppercase;font-size:clamp(22px,3.4vw,46px);letter-spacing:.01em}
+.roles-table .en{font-family:var(--f-serif);font-style:italic;color:var(--ink-45);font-size:clamp(13px,1.2vw,17px)}
+@media (max-width:900px){
+  .about__cols>*{grid-column:1/-1!important}
+  .about__vis{margin-left:clamp(30px,26vw,240px)}
+  .about__body{text-align:left}
+  .about__q,.about__lede,.about__txt,.about__note{grid-column:1/-1}
+  .about__note{border-left:0;padding-left:0;border-top:var(--rule) solid var(--ink-18);padding-top:14px}
+  .roles-table li{grid-template-columns:44px 1fr}
+  .roles-table .en{grid-column:2;margin-top:2px}
+}
+
+/* =====================================================================
+   WORK — índice de proyectos
+   ===================================================================== */
+.work-open{padding-block:clamp(52px,9vh,120px) clamp(28px,5vh,56px)}
+.work-open__t{font-size:clamp(52px,13vw,220px);margin-top:clamp(18px,3vh,40px)}
+.work-index{margin-top:clamp(26px,4vh,52px);border-top:var(--rule) solid var(--ink-18)}
+.work-index a{display:grid;grid-template-columns:56px 1.6fr 1fr 64px;gap:16px;align-items:center;padding:16px 0;border-bottom:var(--rule) solid var(--ink-18);position:relative;overflow:hidden}
+.work-index a>*{position:relative;z-index:2;transition:color .45s ease}
+.work-index a::before{content:"";position:absolute;inset:0;z-index:1;background:var(--sw,var(--ink));transform:translateY(101%);transition:transform .55s cubic-bezier(.16,.84,.24,1)}
+.work-index a:hover::before{transform:none}
+.work-index a:hover>*{color:var(--sw-ink,var(--paper))}
+.work-index .n{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-45)}
+.work-index .t{font-family:var(--f-grot);font-weight:700;font-stretch:74%;text-transform:uppercase;font-size:clamp(19px,2.6vw,34px)}
+.work-index .m{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-45)}
+.work-index .y{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;text-align:right}
+@media (max-width:760px){
+  .work-index a{grid-template-columns:40px 1fr 52px}
+  .work-index .m{display:none}
+}
+
+/* =====================================================================
+   CHAPTER — cada proyecto es un capítulo con su propio tema.
+   Sólo redefine paper/ink/accent. La composición varía por capítulo.
+   ===================================================================== */
+.chapter{background:var(--paper);color:var(--ink);padding-block:var(--bleed);border-top:var(--rule) solid var(--ink-18);overflow:clip}
+.ch__head{align-items:end;row-gap:18px}
+.ch__num{grid-column:1/span 2;font-family:var(--f-grot);font-weight:800;font-stretch:62%;font-size:clamp(64px,12vw,190px);line-height:.8;color:transparent;-webkit-text-stroke:1px var(--accent)}
+.ch__title{grid-column:3/span 7;font-size:clamp(38px,6.6vw,108px)}
+.ch__title em{font-family:var(--f-serif);font-style:italic;font-weight:400;font-stretch:100%;text-transform:none}
+.ch__meta{grid-column:11/span 2;display:flex;flex-direction:column;gap:6px;text-align:right}
+.ch__meta span{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-45)}
+.ch__meta b{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+@media (max-width:900px){
+  .ch__num{grid-column:1/-1}
+  .ch__title{grid-column:1/-1}
+  .ch__meta{grid-column:1/-1;text-align:left;border-top:var(--rule) solid var(--ink-18);padding-top:12px}
+}
+
+/* video 16:9 */
+.player{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.player::after{content:"";position:absolute;inset:0;border:var(--rule) solid color-mix(in oklab,var(--ink) 22%,transparent);pointer-events:none}
+
+/* placeholders de imagen (fotogramas / rodaje / making of) */
+.ph{position:relative;overflow:hidden;background:
+  repeating-linear-gradient(135deg,color-mix(in oklab,var(--ink) 9%,transparent) 0 2px,transparent 2px 9px),
+  color-mix(in oklab,var(--ink) 4%,transparent);
+  border:var(--rule) solid color-mix(in oklab,var(--ink) 20%,transparent);display:grid;place-items:center;min-height:110px}
+.ph::after{content:attr(data-label);font-family:var(--f-mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in oklab,var(--ink) 55%,var(--paper));text-align:center;padding:10px 14px;background:var(--paper);border:var(--rule) solid color-mix(in oklab,var(--ink) 20%,transparent);max-width:82%}
+
+/* bloques de contenido de capítulo */
+.ch__concept{font-family:var(--f-serif);font-size:clamp(20px,2.1vw,30px);line-height:1.26;max-width:30ch}
+.ch__body{color:var(--ink-70);font-size:15.5px;line-height:1.72;max-width:46ch}
+.credits{border-top:var(--rule) solid var(--ink-18)}
+.credits li{display:flex;justify-content:space-between;gap:18px;padding:9px 0;border-bottom:var(--rule) solid var(--ink-18);font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+.credits li span:last-child{color:var(--ink-45);text-align:right}
+
+/* proceso: 4 fases como índice tipográfico */
+.phases{margin-top:clamp(30px,5vh,64px);border-top:var(--rule) solid var(--accent)}
+.phases>li{display:grid;grid-template-columns:78px 1fr;gap:clamp(14px,3vw,40px);padding:20px 0;border-bottom:var(--rule) solid var(--ink-18)}
+.phases .step{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--accent)}
+.phases h4{font-family:var(--f-grot);font-weight:700;font-stretch:72%;text-transform:uppercase;font-size:clamp(17px,2vw,26px);letter-spacing:.02em;margin-bottom:6px}
+.phases p{color:var(--ink-70);font-size:15px;line-height:1.68;max-width:58ch}
+@media (max-width:640px){.phases>li{grid-template-columns:1fr;gap:8px}}
+
+/* --- composición ch01: full-bleed, título desbordando el vídeo --- */
+.ch01__media{margin-top:clamp(24px,4vh,48px)}
+.ch01__grid{margin-top:clamp(26px,4vh,56px);row-gap:32px}
+.ch01__grid .a{grid-column:1/span 4}
+.ch01__grid .b{grid-column:6/span 4}
+.ch01__grid .c{grid-column:11/span 2}
+.ch01__stills{margin-top:clamp(30px,5vh,64px);row-gap:var(--gut)}
+.ch01__stills .s1{grid-column:1/span 7;aspect-ratio:16/9}
+.ch01__stills .s2{grid-column:9/span 4;aspect-ratio:4/5;align-self:end}
+@media (max-width:900px){
+  .ch01__grid .a,.ch01__grid .b,.ch01__grid .c,.ch01__stills .s1,.ch01__stills .s2{grid-column:1/-1}
+}
+
+/* --- composición ch02: columna sticky + pila vertical desplazada --- */
+.ch02__split{margin-top:clamp(24px,4vh,48px);row-gap:36px}
+.ch02__side{grid-column:1/span 3;position:sticky;top:96px;align-self:start;display:flex;flex-direction:column;gap:22px}
+.ch02__stack{grid-column:5/span 8;display:flex;flex-direction:column;gap:var(--gut)}
+.ch02__stack .off1{width:78%;aspect-ratio:16/9;margin-left:auto}
+.ch02__stack .off2{width:58%;aspect-ratio:4/5}
+.ch02__stack .off3{width:88%;aspect-ratio:2/1;margin-left:auto}
+@media (max-width:900px){
+  .ch02__side{grid-column:1/-1;position:static}
+  .ch02__stack{grid-column:1/-1}
+  .ch02__stack .off1,.ch02__stack .off2,.ch02__stack .off3{width:100%;margin:0}
+}
+
+/* --- composición ch03: eje central, serif protagonista --- */
+.ch03__center{max-width:1020px;margin-inline:auto;text-align:center}
+.ch03__quote{font-family:var(--f-serif);font-style:italic;font-size:clamp(24px,3.6vw,52px);line-height:1.18;margin-block:clamp(28px,5vh,56px);max-width:26ch;margin-inline:auto}
+.ch03__strip{margin-top:clamp(26px,4vh,52px);display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gut)}
+.ch03__strip .ph{aspect-ratio:1/1}
+.ch03__wide{margin-top:var(--gut);aspect-ratio:21/9}
+@media (max-width:640px){.ch03__strip{grid-template-columns:1fr 1fr}}
+
+/* --- composición ch04: retícula rota, solapes --- */
+.ch04__break{margin-top:clamp(24px,4vh,48px);position:relative;row-gap:24px}
+.ch04__player{grid-column:1/span 9}
+.ch04__tall{grid-column:9/span 4;aspect-ratio:3/4;align-self:start;margin-top:clamp(28px,6vw,90px);position:relative;z-index:3}
+.ch04__row{margin-top:clamp(20px,3vh,40px);row-gap:24px}
+.ch04__row .w{grid-column:1/span 5;aspect-ratio:16/10}
+.ch04__row .t{grid-column:7/span 6}
+@media (max-width:900px){
+  .ch04__player,.ch04__tall,.ch04__row .w,.ch04__row .t{grid-column:1/-1;margin-top:0}
+}
+
+/* =====================================================================
+   CONTACTO
+   ===================================================================== */
+.contact{padding-block:clamp(80px,14vh,180px);border-top:var(--rule) solid var(--ink-18)}
+.contact__t{font-size:clamp(52px,13.5vw,230px)}
+.contact__t em{font-family:var(--f-serif);font-style:italic;font-weight:400;font-stretch:100%;text-transform:none}
+.contact__row{margin-top:clamp(30px,5vh,64px);display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap}
+.mailto{font-family:var(--f-grot);font-weight:700;font-stretch:76%;text-transform:uppercase;font-size:clamp(20px,3.4vw,46px);letter-spacing:.01em;padding-bottom:8px;border-bottom:1px solid currentColor}
+.socials{display:flex;gap:clamp(16px,3vw,40px);flex-wrap:wrap}
+.socials a{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid transparent}
+.socials a:hover{border-bottom-color:currentColor}
+footer{padding:22px var(--gut);border-top:var(--rule) solid var(--ink-18);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<header class="nav" id="nav">
+  <a class="nav__id" href="#cover">Antonio Gálvez</a>
+  <nav class="nav__mid" id="navmid" aria-label="Índice">
+    <a href="#work">Selected work</a>
+    <a href="#about">¿Quién soy?</a>
+    <a href="#contact">Contacto</a>
+  </nav>
+  <div class="nav__now" id="navnow" aria-live="polite">Almería · ES</div>
+  <button class="nav__burger" id="burger" aria-label="Abrir índice" aria-expanded="false" aria-controls="navmid"><span></span></button>
+</header>
+
+<!-- ============================ COVER ============================ -->
+<section class="cover pad" id="cover" aria-label="Portada">
+  <div class="cover__top">
+    <div class="mono mono--sm" style="font-size:15px">Archivo audiovisual<br />2026 — Almería, España</div>
+    <div class="mono mono--sm r" style="font-size:15px">Selected work 01 — 04<br />Disponible para encargos</div>
+  </div>
+
+  <div class="cover__body grid">
+    <figure class="cover__fig scale-in" data-parallax="0.06" style="width:368px;height:437px">
+      <img src="./portfolioantoniosolo1-mt1or92m-vdpl.png" alt="Antonio Gálvez en exterior, desierto de Tabernas, Almería." style="position:absolute;inset:0;width:374px;height:518px;object-fit:cover;object-position:22% 42%;left:-2px;top:-68px" />
+      <figcaption class="mono mono--sm">Tabernas · AL</figcaption>
+    </figure>
+
+    <div class="cover__type">
+      <h1 class="grot cover__name">
+        <span class="ln"><span style="text-align:right">Antonio</span></span>
+        <span class="ln"><span style="text-align:right"><em>Gálvez</em></span></span>
+      </h1>
+      <ul class="cover__roles up" data-d="2" style="justify-content:center">
+        <li><span>01</span>Creative Director</li>
+        <li><span>02</span>Filmmaker</li>
+        <li><span>03</span>Music Video Director</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cover__foot pad" style="padding-inline:0">
+    <p class="cover__lede up" data-d="1">Construyo un lenguaje audiovisual propio para cada artista. La forma cambia; la mirada, no.</p>
+    <a class="jump up" data-d="2" href="#work">Selected work <span aria-hidden="true">↓</span></a>
+  </div>
+</section>
+
+<!-- ============================ TICKER ============================ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__row" id="ticker"></div>
+</div>
+
+<!-- ============================ ABOUT ============================ -->
+<section class="about pad" id="about" aria-labelledby="about-t" style="--paper:#111111;--ink:#f4f4f2;--accent:#f4f4f2;background:url('./portfolioantonio5-mt03tfoi-n9sm.png') center / cover no-repeat">
+  <div class="sec-head">
+    <span class="mono" style="color:#F2F1EE">01 — Perfil</span>
+    <span class="mono mono--sm" style="color:#F2F1EE">Director / Camera / Editor</span>
+  </div>
+
+  <div class="about__cols grid" style="margin-top:0;align-items:start">
+    <div style="grid-column:1/span 7">
+      <div class="about__stack">
+        <h2 id="about-t" style="color:#F2F1EE;position:relative">
+          <span class="ln about__k1"><span>¿Quién soy?</span></span>
+          <span class="ln about__k2"><span>Soy comunicador</span></span>
+          <span class="about__vis up" data-d="1" style="font-size:158px;text-align:left;width:701px;left:-314px"><font color="#f2f1ee" face="Archivo, Helvetica Neue, Helvetica, Arial, sans-serif"><span style="font-size:74px;font-style:normal;letter-spacing:-0.74px"><b style="font-size:106px">Audio</b></span></font>visual</span>
+          <span class="ln about__k3"><span>como profesional</span></span>
+        </h2>
+      </div>
+
+      <div class="about__body up" data-d="2">
+        <p style="color:#F2F1EE;text-transform:none">Desempeño el papel de director creativo, fotógrafo, director de imagen, cámara y editor. Experiencia rica desde la planificación hasta la edición. Rapidez y eficacia en el trabajo. Orientado al mundo de los videoclips.</p>
+        <p style="color:#F2F1EE">Mi proceso se basa en la construcción de un lenguaje audiovisual propio, así como la conexión emocional con el espectador.<br />Mi lema es mantener la <b>esencia</b> del cliente por encima de todo.</p>
+      </div>
+    </div>
+  </div>
+
+  <ol class="roles-table">
+    <li class="up"><span class="n">01</span><span class="t">Dirección creativa</span><span class="en">creative direction</span></li>
+    <li class="up"><span class="n">02</span><span class="t">Dirección</span><span class="en">direction</span></li>
+    <li class="up"><span class="n">03</span><span class="t">Dirección de fotografía</span><span class="en">cinematography</span></li>
+    <li class="up"><span class="n">04</span><span class="t">Cámara</span><span class="en">camera</span></li>
+    <li class="up"><span class="n">05</span><span class="t">Edición</span><span class="en">editing</span></li>
+    <li class="up"><span class="n">06</span><span class="t">Planificación</span><span class="en">planning</span></li>
+    <li class="up"><span class="n">07</span><span class="t">Postproducción</span><span class="en">post-production</span></li>
+  </ol>
+</section>
+
+<!-- ============================ WORK — índice ============================ -->
+<section class="work-open pad" id="work" aria-labelledby="work-t">
+  <div class="sec-head">
+    <span class="mono">02 — Trabajos</span>
+    <span class="mono mono--sm">Cuatro capítulos · cuatro lenguajes</span>
+  </div>
+  <h2 class="grot work-open__t" id="work-t">
+    <span class="ln"><span>Selected</span></span>
+    <span class="ln"><span>work</span></span>
+  </h2>
+  <nav class="work-index" aria-label="Índice de proyectos">
+    <a href="#p01" style="--sw:#0b0b0b;--sw-ink:#D8A647;background:url('./captura-de-pantalla-2025-12-08-115558-mt02xhfn-fc9b.png') center / cover no-repeat;color:#FFFFFF" data-om-label="idilicos_banner"><span class="n" style="left:14px">01</span><span class="t">idílicos</span><span class="m">VLANES</span><span class="y" style="text-align:center">2025</span></a>
+    <a href="#p02" style="--sw:#08131a;--sw-ink:#B02A1E;background:url('./captura-de-pantalla-2026-02-16-122624-mt02wlek-i9fc.png') center / cover no-repeat;color:#F1F1F1"><span class="n" style="left:14px">02</span><span class="t">ASPERO</span><span class="m">VLANES</span><span class="y" style="text-align:center">2026</span></a>
+    <a href="#p03" style="--sw:#101612;--sw-ink:#467E4A;background:url('./captura-de-pantalla-2026-03-22-133857-mt04e41i-7kbi.png') center / cover no-repeat;color:#FFFFFF"><span class="n" style="left:14px">03</span><span class="t">12 CADENAS</span><span class="m">VLANES</span><span class="y" style="text-align:center">2026</span></a>
+    <a href="#p04" style="--sw:#D3D3D3;--sw-ink:#000000;background:url('./wanda-el-duro-mt02u7tx-1hv6.png') center / cover no-repeat;color:#FFFFFF"><span class="n" style="left:14px">04</span><span class="t">GITANA ROMERA</span><span class="m">VLANES</span><span class="y" style="text-align:center">2026</span></a>
+  </nav>
+</section>
+
+<!-- =====================================================================
+     CAPÍTULO 01 — tema: rojo / negro, agresivo
+     ===================================================================== -->
+<article class="chapter pad" id="p01" data-chapter="01" style="--paper:#0b0b0b;--ink:#D8A647;--accent:#D8A647" data-om-label="IDÍLICOS">
+  <header class="ch__head grid">
+    <div class="ch__num">01</div>
+    <h2 class="grot ch__title">
+      <span class="ln"><span>[Título</span></span>
+      <span class="ln"><span><em>proyecto 01]</em></span></span>
+    </h2>
+    <div class="ch__meta up">
+      <span>Artista</span><b>[Artista]</b>
+      <span>Año</span><b>[Año]</b>
+      <span>Formato</span><b>Videoclip</b>
+    </div>
+  </header>
+
+  <div class="ch01__media player scale-in">
+    <iframe src="https://www.youtube-nocookie.com/embed/mtUqcAf-cM4?rel=0" title="Videoclip — proyecto 01" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  </div>
+
+  <div class="ch01__grid grid">
+    <p class="ch__concept a up">[Concepto: 1–2 frases sobre la idea y el universo visual del proyecto.]</p>
+    <div class="ch__body b up" data-d="1">
+      <p><strong>Mi papel.</strong> [Dirección creativa · cámara · edición. Describe brevemente qué asumiste tú.]</p>
+    </div>
+    <ul class="credits c up" data-d="2">
+      <li><span>Dirección</span><span>A. Gálvez</span></li>
+      <li><span>DOP</span><span>[Nombre]</span></li>
+      <li><span>Edición</span><span>[Nombre]</span></li>
+      <li><span>Color</span><span>[Nombre]</span></li>
+      <li><span>Prod.</span><span>[Nombre]</span></li>
+    </ul>
+  </div>
+
+  <div class="ch01__stills grid">
+    <div class="ph s1 up" data-label="fotograma 01 · plano principal — 16:9" style="background:url('./desktop-screenshot-2026-08-20---13-01-16-mt1eve6g-6m0j.png') center / cover no-repeat"></div>
+    <div class="ph s2 up" data-d="1" data-label="foto de rodaje · vertical — 4:5"></div>
+  </div>
+
+  <ol class="phases">
+    <li class="up"><span class="step">Fase 01</span><div><h4>Concepto e idea</h4><p>[Texto del concepto y la idea.]</p></div></li>
+    <li class="up"><span class="step">Fase 02</span><div><h4>Preproducción y planificación</h4><p>[Texto de preproducción y planificación.]</p></div></li>
+    <li class="up"><span class="step">Fase 03</span><div><h4>Rodaje</h4><p>[Texto del rodaje.]</p></div></li>
+    <li class="up"><span class="step">Fase 04</span><div><h4>Postproducción y edición</h4><p>[Texto de postproducción y edición.]</p></div></li>
+  </ol>
+</article>
+
+<!-- =====================================================================
+     CAPÍTULO 02 — tema: azul / verde, nocturno
+     ===================================================================== -->
+<article class="chapter pad" id="p02" data-chapter="02" style="--paper:#08131a;--ink:#B02A1E;--accent:#B02A1E" data-om-label="ASPERO">
+  <header class="ch__head grid">
+    <div class="ch__num">02</div>
+    <h2 class="grot ch__title">
+      <span class="ln"><span>[Título</span></span>
+      <span class="ln"><span><em>proyecto 02]</em></span></span>
+    </h2>
+    <div class="ch__meta up">
+      <span>Artista</span><b>[Artista]</b>
+      <span>Año</span><b>[Año]</b>
+      <span>Formato</span><b>Videoclip</b>
+    </div>
+  </header>
+
+  <div class="ch02__split grid">
+    <aside class="ch02__side">
+      <p class="ch__concept up">[Concepto: idea y atmósfera nocturna del proyecto.]</p>
+      <div class="ch__body up" data-d="1"><p><strong>Mi papel.</strong> [Rol desempeñado.]</p></div>
+      <ul class="credits up" data-d="2">
+        <li><span>Dirección</span><span>A. Gálvez</span></li>
+        <li><span>Cámara</span><span>[Nombre]</span></li>
+        <li><span>Edición</span><span>[Nombre]</span></li>
+      </ul>
+    </aside>
+
+    <div class="ch02__stack">
+      <div class="player scale-in off1">
+        <iframe src="https://www.youtube-nocookie.com/embed/_7iVt_g11L8?rel=0" title="Videoclip — proyecto 02" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="ph off2 up" data-parallax="0.04" data-label="fotograma · nocturno — 4:5"></div>
+      <div class="ph off3 up" data-parallax="0.03" data-label="making of · plano amplio — 2:1"></div>
+    </div>
+  </div>
+
+  <ol class="phases">
+    <li class="up"><span class="step">Fase 01</span><div><h4>Concepto e idea</h4><p>[Texto del concepto y la idea.]</p></div></li>
+    <li class="up"><span class="step">Fase 02</span><div><h4>Preproducción y planificación</h4><p>[Texto de preproducción y planificación.]</p></div></li>
+    <li class="up"><span class="step">Fase 03</span><div><h4>Rodaje</h4><p>[Texto del rodaje.]</p></div></li>
+    <li class="up"><span class="step">Fase 04</span><div><h4>Postproducción y edición</h4><p>[Texto de postproducción y edición.]</p></div></li>
+  </ol>
+</article>
+
+<!-- =====================================================================
+     CAPÍTULO 03 — tema: blanco y negro puro
+     ===================================================================== -->
+<article class="chapter pad" id="p03" data-chapter="03" style="--paper:#101612;--ink:#467E4A;--accent:#467E4A" data-om-label="12 CADENAS">
+  <header class="ch__head grid">
+    <div class="ch__num">03</div>
+    <h2 class="grot ch__title">
+      <span class="ln"><span>[Título</span></span>
+      <span class="ln"><span><em>proyecto 03]</em></span></span>
+    </h2>
+    <div class="ch__meta up">
+      <span>Artista</span><b>[Artista]</b>
+      <span>Año</span><b>[Año]</b>
+      <span>Formato</span><b>Videoclip</b>
+    </div>
+  </header>
+
+  <div class="ch03__center">
+    <blockquote class="ch03__quote up">[Frase o idea que resume el proyecto — funciona como titular editorial.]</blockquote>
+    <div class="player scale-in">
+      <iframe src="https://www.youtube-nocookie.com/embed/zeKFSYPJXjU?rel=0" title="Videoclip — proyecto 03" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="ch03__strip">
+      <div class="ph up" data-label="fotograma 01"></div>
+      <div class="ph up" data-d="1" data-label="fotograma 02"></div>
+      <div class="ph up" data-d="2" data-label="fotograma 03"></div>
+    </div>
+    <div class="ph ch03__wide up" data-label="foto de rodaje · panorámica — 21:9"></div>
+  </div>
+
+  <div class="ch01__grid grid">
+    <p class="ch__concept a up">[Concepto: por qué este proyecto es en blanco y negro.]</p>
+    <div class="ch__body b up" data-d="1"><p><strong>Mi papel.</strong> [Rol desempeñado.]</p></div>
+    <ul class="credits c up" data-d="2">
+      <li><span>Dirección</span><span>A. Gálvez</span></li>
+      <li><span>Foto</span><span>[Nombre]</span></li>
+      <li><span>Edición</span><span>[Nombre]</span></li>
+    </ul>
+  </div>
+
+  <ol class="phases">
+    <li class="up"><span class="step">Fase 01</span><div><h4>Concepto e idea</h4><p>[Texto del concepto y la idea.]</p></div></li>
+    <li class="up"><span class="step">Fase 02</span><div><h4>Preproducción y planificación</h4><p>[Texto de preproducción y planificación.]</p></div></li>
+    <li class="up"><span class="step">Fase 03</span><div><h4>Rodaje</h4><p>[Texto del rodaje.]</p></div></li>
+    <li class="up"><span class="step">Fase 04</span><div><h4>Postproducción y edición</h4><p>[Texto de postproducción y edición.]</p></div></li>
+  </ol>
+</article>
+
+<!-- =====================================================================
+     CAPÍTULO 04 — tema: saturado, retícula rota
+     ===================================================================== -->
+<article class="chapter pad" id="p04" data-chapter="04" style="--paper:#D3D3D3;--ink:#000000;--accent:#000000" data-om-label="GITANA ROMERA">
+  <header class="ch__head grid">
+    <div class="ch__num">04</div>
+    <h2 class="grot ch__title">
+      <span class="ln"><span>[Título</span></span>
+      <span class="ln"><span><em style="height:1px;display:inline-block">proyecto 04]</em></span></span>
+    </h2>
+    <div class="ch__meta up">
+      <span>Artista</span><b>[Artista]</b>
+      <span>Año</span><b>[Año]</b>
+      <span>Formato</span><b>Videoclip</b>
+    </div>
+  </header>
+
+  <div class="ch04__break grid">
+    <div class="player ch04__player scale-in">
+      <iframe src="https://www.youtube-nocookie.com/embed/UMT_r8Nuk60?rel=0" title="Videoclip — proyecto 04" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="ph ch04__tall up" data-parallax="0.05" data-label="fotograma saturado · vertical — 3:4"></div>
+  </div>
+
+  <div class="ch04__row grid">
+    <div class="ph w up" data-label="making of · 16:10"></div>
+    <div class="t">
+      <p class="ch__concept up">[Concepto: saturación, color y energía del proyecto.]</p>
+      <div class="ch__body up" data-d="1" style="margin-top:18px"><p><strong>Mi papel.</strong> [Rol desempeñado.]</p></div>
+      <ul class="credits up" data-d="2" style="margin-top:18px">
+        <li><span>Dirección</span><span>A. Gálvez</span></li>
+        <li><span>Color</span><span>[Nombre]</span></li>
+        <li><span>Edición</span><span>[Nombre]</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <ol class="phases">
+    <li class="up"><span class="step">Fase 01</span><div><h4>Concepto e idea</h4><p>[Texto del concepto y la idea.]</p></div></li>
+    <li class="up"><span class="step">Fase 02</span><div><h4>Preproducción y planificación</h4><p>[Texto de preproducción y planificación.]</p></div></li>
+    <li class="up"><span class="step">Fase 03</span><div><h4>Rodaje</h4><p>[Texto del rodaje.]</p></div></li>
+    <li class="up"><span class="step">Fase 04</span><div><h4>Postproducción y edición</h4><p>[Texto de postproducción y edición.]</p></div></li>
+  </ol>
+</article>
+
+<!-- ============================ CONTACTO ============================ -->
+<section class="contact pad" id="contact" aria-labelledby="contact-t">
+  <div class="sec-head">
+    <span class="mono">03 — Contacto</span>
+    <span class="mono mono--sm">Almería · trabajo en remoto y viajando</span>
+  </div>
+  <h2 class="grot contact__t" id="contact-t" style="margin-top:clamp(20px,4vh,48px)">
+    <span class="ln"><span>Colabo-</span></span>
+    <span class="ln"><span><em>remos</em></span></span>
+  </h2>
+  <div class="contact__row">
+    <a class="mailto up" href="mailto:[TU EMAIL]">[TU EMAIL]</a>
+    <ul class="socials up" data-d="1">
+      <li><a href="https://instagram.com/[TU @]" target="_blank" rel="noopener noreferrer">Instagram ↗</a></li>
+      <li><a href="[URL DE TU CANAL]" target="_blank" rel="noopener noreferrer">YouTube ↗</a></li>
+      <li><a href="mailto:[TU EMAIL]">Email ↗</a></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <span class="mono mono--sm">© 2026 Antonio Gálvez</span>
+  <span class="mono mono--sm">Creative Director · Filmmaker · Music Video Director</span>
+  <span class="mono mono--sm">Almería, España</span>
+</footer>
+
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- ticker: roles como grafismo continuo ---------- */
+  var words = ['Creative Director','dirección','Filmmaker','cámara','Music Video Director','edición','Director of Photography','postproducción'];
+  var tick = document.getElementById('ticker');
+  var html = words.map(function(w){ return '<span>'+w+'</span>'; }).join('');
+  tick.innerHTML = html + html; /* duplicado para bucle continuo */
+
+  /* ---------- reveals ---------- */
+  var targets = document.querySelectorAll('.up,.scale-in,.ln');
+  if (!reduced && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); } });
+    },{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+    targets.forEach(function(t){ io.observe(t); });
+  } else {
+    targets.forEach(function(t){ t.classList.add('is-in'); });
+  }
+
+  /* ---------- parallax muy sutil ---------- */
+  var px = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
+  var ticking = false;
+  function frame(){
+    var vh = window.innerHeight;
+    px.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh + 200) return;
+      var mid = r.top + r.height/2 - vh/2;
+      el.style.transform = 'translate3d(0,'+(-mid*parseFloat(el.dataset.parallax)).toFixed(2)+'px,0)';
+    });
+    ticking = false;
+  }
+  if (!reduced && px.length){
+    window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(frame); } },{passive:true});
+    frame();
+  }
+
+  /* ---------- nav: adopta el tema del capítulo visible ---------- */
+  var nav = document.getElementById('nav');
+  var now = document.getElementById('navnow');
+  var themed = Array.prototype.slice.call(document.querySelectorAll('[data-chapter], #cover, #about, #work, #contact'));
+  function setNav(el){
+    var cs = getComputedStyle(el);
+    nav.style.setProperty('--nav-paper', cs.getPropertyValue('--paper').trim() || '#f2f1ee');
+    nav.style.setProperty('--nav-ink', cs.getPropertyValue('--ink').trim() || '#0d0d0c');
+    var ch = el.getAttribute('data-chapter');
+    now.textContent = ch ? 'Capítulo '+ch+' / 04' : 'Almería · ES';
+    var id = '#'+el.id;
+    document.querySelectorAll('.nav__mid a').forEach(function(a){
+      var on = a.getAttribute('href')===id || (ch && a.getAttribute('href')==='#work');
+      a.setAttribute('aria-current', on ? 'true' : 'false');
+    });
+  }
+  if ('IntersectionObserver' in window){
+    var ao = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) setNav(e.target); });
+    },{rootMargin:'-12% 0px -80% 0px',threshold:0});
+    themed.forEach(function(s){ ao.observe(s); });
+  }
+
+  /* ---------- índice móvil ---------- */
+  var burger = document.getElementById('burger');
+  var mid = document.getElementById('navmid');
+  burger.addEventListener('click',function(){
+    var open = nav.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Cerrar índice' : 'Abrir índice');
+  });
+  mid.addEventListener('click',function(e){
+    if (e.target.tagName==='A'){ nav.classList.remove('is-open'); burger.setAttribute('aria-expanded','false'); }
+  });
+
+  /* ---------- scroll suave con offset de nav (sin scrollIntoView) ---------- */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(ev){
+      var id = a.getAttribute('href');
+      if (id.length < 2) return;
+      var t = document.querySelector(id);
+      if (!t) return;
+      ev.preventDefault();
+      var y = t.getBoundingClientRect().top + window.pageYOffset - 58;
+      window.scrollTo({top:y, behavior: reduced ? 'auto' : 'smooth'});
+    });
+  });
+})();
+</script>
+</body>
+</html>

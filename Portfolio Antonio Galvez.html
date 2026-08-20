@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Antonio Gálvez — Portfolio Audiovisual</title>
+<meta name="description" content="Antonio Gálvez — Creative Director, Filmmaker & Music Video Director. Almería, España." />
+
+<!-- Google Fonts: Anton (condensed heavy sans), Cormorant Garamond (elegant serif), Inter (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  /* =========================================================
+     TOKENS — Color, type, spacing
+     ========================================================= */
+  :root{
+    --bg:        #0a0907;        /* deep warm black */
+    --bg-2:      #131110;        /* card / elevated */
+    --bg-3:      #1c1916;        /* hairline / divider bed */
+    --ink:       #f3ece1;        /* off-white, warm */
+    --ink-dim:   #b9aea0;        /* muted body */
+    --ink-mute:  #6d6357;        /* labels / meta */
+    --line:      rgba(243,236,225,.10);
+    --accent:    #d9824e;        /* terracota / atardecer Tabernas */
+    --accent-2:  #e8a866;        /* amber highlight */
+    --accent-glow: rgba(217,130,78,.18);
+
+    --f-display:  "Anton", "Helvetica Neue", Arial, sans-serif;
+    --f-serif:    "Cormorant Garamond", Georgia, serif;
+    --f-body:     "Inter", "Helvetica Neue", Arial, sans-serif;
+
+    --maxw: 1440px;
+    --gutter: clamp(20px, 4vw, 64px);
+  }
+
+  /* =========================================================
+     RESET
+     ========================================================= */
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--f-body);
+    font-weight:400;
+    line-height:1.55;
+    font-size:16px;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:2px; }
+
+  /* Grain texture overlay — applied to body via ::before */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    z-index:1000;
+    opacity:.08;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* Selection */
+  ::selection{ background:var(--accent); color:#0a0907; }
+
+  /* =========================================================
+     LAYOUT HELPERS
+     ========================================================= */
+  .wrap{
+    width:100%;
+    max-width:var(--maxw);
+    margin-inline:auto;
+    padding-inline:var(--gutter);
+  }
+  .eyebrow{
+    font-family:var(--f-body);
+    font-weight:500;
+    font-size:11px;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--ink-mute);
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:32px; height:1px;
+    background:var(--accent);
+    display:inline-block;
+  }
+  .serif{ font-family:var(--f-serif); font-style:italic; font-weight:400; }
+  .accent{ color:var(--accent); }
+
+  /* Section base */
+  section{ position:relative; padding-block: clamp(80px, 12vh, 160px); }
+  .section-num{
+    position:absolute;
+    top:clamp(28px, 5vh, 56px);
+    right:var(--gutter);
+    font-family:var(--f-display);
+    font-size:14px;
+    letter-spacing:.3em;
+    color:var(--ink-mute);
+  }
+
+  /* Display headings */
+  h1,h2,h3,h4{ margin:0; font-weight:400; }
+  .display{
+    font-family:var(--f-display);
+    text-transform:uppercase;
+    letter-spacing:-.005em;
+    line-height:.86;
+    color:var(--ink);
+  }
+
+  /* =========================================================
+     SCROLL REVEAL
+     ========================================================= */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1);
+    will-change:opacity, transform;
+  }
+  .reveal.is-in{ opacity:1; transform:none; }
+  .reveal[data-delay="1"]{ transition-delay:.08s; }
+  .reveal[data-delay="2"]{ transition-delay:.16s; }
+  .reveal[data-delay="3"]{ transition-delay:.24s; }
+  .reveal[data-delay="4"]{ transition-delay:.32s; }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+    html{ scroll-behavior:auto; }
+  }
+
+  /* =========================================================
+     NAVIGATION (sticky)
+     ========================================================= */
+  .nav{
+    position:fixed; top:0; left:0; right:0;
+    z-index:100;
+    padding:18px var(--gutter);
+    display:flex; align-items:center; justify-content:space-between;
+    transition: background .4s ease, backdrop-filter .4s ease, border-color .4s ease, padding .3s ease;
+    border-bottom:1px solid transparent;
+  }
+  .nav.is-scrolled{
+    background:rgba(10,9,7,.78);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-bottom-color:var(--line);
+    padding-block:12px;
+  }
+  .nav__brand{
+    font-family:var(--f-display);
+    font-size:18px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  .nav__brand .dot{ color:var(--accent); margin:0 6px; }
+  .nav__links{
+    display:flex; gap:36px; align-items:center;
+    list-style:none; padding:0; margin:0;
+  }
+  .nav__links a{
+    font-size:12px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    position:relative;
+    padding:6px 0;
+    transition:color .25s ease;
+  }
+  .nav__links a::after{
+    content:""; position:absolute; left:0; right:0; bottom:0;
+    height:1px; background:var(--accent);
+    transform:scaleX(0); transform-origin:left;
+    transition:transform .35s ease;
+  }
+  .nav__links a:hover{ color:var(--ink); }
+  .nav__links a:hover::after,
+  .nav__links a.is-active::after{ transform:scaleX(1); }
+  .nav__links a.is-active{ color:var(--ink); }
+
+  .nav__toggle{
+    display:none;
+    width:36px; height:36px;
+    align-items:center; justify-content:center;
+  }
+  .nav__toggle span{
+    display:block; width:22px; height:1px; background:var(--ink);
+    position:relative;
+  }
+  .nav__toggle span::before,
+  .nav__toggle span::after{
+    content:""; position:absolute; left:0; right:0; height:1px; background:var(--ink);
+    transition:transform .3s ease, top .3s ease;
+  }
+  .nav__toggle span::before{ top:-7px; }
+  .nav__toggle span::after{ top:7px; }
+  .nav.is-open .nav__toggle span{ background:transparent; }
+  .nav.is-open .nav__toggle span::before{ top:0; transform:rotate(45deg); }
+  .nav.is-open .nav__toggle span::after{ top:0; transform:rotate(-45deg); }
+
+  @media (max-width: 820px){
+    .nav__toggle{ display:flex; }
+    .nav__links{
+      position:fixed; inset:0; top:0;
+      flex-direction:column; gap:28px;
+      align-items:flex-start; justify-content:center;
+      padding:0 var(--gutter);
+      background:rgba(10,9,7,.97);
+      backdrop-filter:blur(20px);
+      transform:translateY(-100%);
+      transition:transform .5s cubic-bezier(.7,0,.2,1);
+    }
+    .nav.is-open .nav__links{ transform:none; }
+    .nav__links a{ font-size:22px; letter-spacing:.18em; }
+  }
+
+  /* =========================================================
+     HERO — cinematic title reveal (two layered images)
+     ========================================================= */
+  .hero{
+    padding-block:0;
+    padding-top: 84px;        /* clear sticky nav */
+    padding-bottom: clamp(48px, 8vh, 96px);
+    position:relative;
+    background:var(--bg);
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    left:50%; top:50%;
+    width:120vmax; height:120vmax;
+    transform:translate(-50%,-50%);
+    background: radial-gradient(circle at center, rgba(217,130,78,.12) 0%, rgba(217,130,78,0) 38%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .hero__inner{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:var(--maxw);
+    margin-inline:auto;
+    padding-inline:var(--gutter);
+  }
+  .hero__frame{
+    position:relative;
+    width:100%;
+    aspect-ratio: 16 / 9;
+    background:#000;
+    overflow:hidden;
+    box-shadow:
+      0 60px 120px -40px rgba(0,0,0,.85),
+      0 25px 50px -20px rgba(0,0,0,.7);
+  }
+  .hero__frame::after{
+    /* hairline frame + soft vignette */
+    content:""; position:absolute; inset:0;
+    border:1px solid var(--line);
+    box-shadow: inset 0 0 180px rgba(0,0,0,.55);
+    pointer-events:none;
+    z-index:5;
+  }
+
+  /* Layered images inside the frame */
+  .hero__layer{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:contain;
+    object-position:center;
+    display:block;
+  }
+  .hero__layer--solo{
+    /* base / clean image */
+    z-index:1;
+    animation: heroKen 14s ease-in-out 0s infinite alternate;
+  }
+
+  /* Title overlay \u2014 anchored to the right so it doesn't cover the subject */
+  .hero__title{
+    position:absolute;
+    inset:0;
+    z-index:3;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    justify-content:center;
+    padding: clamp(24px, 4vw, 72px);
+    text-align:right;
+    pointer-events:none;
+    opacity:0;
+    animation: heroTitleIn 2.4s cubic-bezier(.2,.7,.2,1) 1.6s forwards;
+  }
+  @media (max-width:720px){
+    .hero__title{ align-items:center; text-align:center; }
+  }
+  .hero__title-eyebrow{
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-weight:300;
+    font-size: clamp(13px, 1.1vw, 17px);
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--accent-2);
+    margin-bottom: clamp(10px, 1.4vh, 22px);
+    text-shadow: 0 2px 18px rgba(0,0,0,.6);
+  }
+  .hero__title-main{
+    font-family:var(--f-display);
+    text-transform:uppercase;
+    line-height:.86;
+    letter-spacing:-.005em;
+    color:var(--ink);
+    font-size: clamp(48px, 9.5vw, 168px);
+    text-shadow: 0 6px 40px rgba(0,0,0,.55);
+  }
+  .hero__title-main .accent{
+    color:var(--accent);
+    display:inline-block;
+    margin-left:.06em;
+  }
+  .hero__title-sub{
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-weight:300;
+    font-size: clamp(14px, 1.3vw, 19px);
+    color:var(--ink-dim);
+    letter-spacing:.04em;
+    margin-top: clamp(14px, 2vh, 28px);
+    text-shadow: 0 2px 18px rgba(0,0,0,.6);
+  }
+  .hero__title-sub .dot{
+    color:var(--accent);
+    margin:0 .5em;
+  }
+  /* Subtle scan / sweep across the image during intro */
+  .hero__sweep{
+    position:absolute; inset:0;
+    z-index:4;
+    pointer-events:none;
+    background: linear-gradient(
+      100deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 38%,
+      rgba(232,168,102,.18) 50%,
+      rgba(255,255,255,0) 62%,
+      rgba(255,255,255,0) 100%
+    );
+    transform: translateX(-100%);
+    animation: heroSweep 2.2s cubic-bezier(.6,.05,.2,1) .9s forwards;
+  }
+  /* Cinematic letterbox bars that retract */
+  .hero__bar{
+    position:absolute; left:0; right:0;
+    height:14%;
+    background:#0a0907;
+    z-index:6;
+    pointer-events:none;
+  }
+  .hero__bar--top{
+    top:0;
+    animation: barOutTop 1.6s cubic-bezier(.7,0,.2,1) .35s forwards;
+  }
+  .hero__bar--bot{
+    bottom:0;
+    animation: barOutBot 1.6s cubic-bezier(.7,0,.2,1) .35s forwards;
+  }
+  /* Tiny timecode overlay — film reel feel */
+  .hero__tc{
+    position:absolute;
+    left:18px; bottom:14px;
+    z-index:7;
+    font-family: "Courier New", monospace;
+    font-size:11px;
+    letter-spacing:.18em;
+    color: rgba(232,168,102,.85);
+    text-shadow: 0 1px 2px rgba(0,0,0,.6);
+    opacity:0;
+    animation: tcIn .6s ease .9s forwards, tcBlink 2.6s steps(1) 2.2s infinite;
+  }
+  .hero__tc .dot{
+    display:inline-block;
+    width:7px; height:7px;
+    background:#d9824e;
+    border-radius:50%;
+    margin-right:8px;
+    transform:translateY(1px);
+  }
+  .hero__rec{
+    position:absolute;
+    right:18px; bottom:14px;
+    z-index:7;
+    font-family:"Courier New", monospace;
+    font-size:11px;
+    letter-spacing:.18em;
+    color: rgba(243,236,225,.7);
+    opacity:0;
+    animation: tcIn .6s ease 1.1s forwards;
+  }
+
+  @keyframes heroKen{
+    from{ transform: scale(1.00) translate(0,0);     filter: saturate(1); }
+    to  { transform: scale(1.06) translate(-1.2%, -.8%); filter: saturate(1.05); }
+  }
+  @keyframes heroTitleIn{
+    from{ opacity:0; transform: scale(1.04); filter: blur(8px); }
+    to  { opacity:1; transform: scale(1);    filter: blur(0); }
+  }
+  @keyframes heroSweep{
+    from{ transform: translateX(-100%); }
+    to  { transform: translateX(100%); }
+  }
+  @keyframes barOutTop{
+    from{ transform: translateY(0); }
+    to  { transform: translateY(-100%); }
+  }
+  @keyframes barOutBot{
+    from{ transform: translateY(0); }
+    to  { transform: translateY(100%); }
+  }
+  @keyframes tcIn{
+    from{ opacity:0; transform: translateY(4px); }
+    to  { opacity:1; transform: none; }
+  }
+  @keyframes tcBlink{
+    0%, 60% { opacity:1; }
+    61%, 100% { opacity:.35; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero__layer--solo,
+    .hero__title,
+    .hero__sweep,
+    .hero__bar--top,
+    .hero__bar--bot,
+    .hero__tc,
+    .hero__rec{ animation: none; }
+    .hero__title{ opacity:1; }
+    .hero__bar{ display:none; }
+    .hero__tc, .hero__rec{ opacity:1; }
+  }
+
+  /* Caption bar below the image */
+  .hero__caption{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    margin-top: clamp(20px, 3vh, 36px);
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    flex-wrap:wrap;
+  }
+  .hero__caption-left,
+  .hero__caption-right{
+    display:flex; align-items:center; gap:14px;
+    font-size:11px;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    color:var(--ink-mute);
+  }
+  .hero__caption .accent{ color:var(--accent); }
+  .hero__caption .serif-meta{
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-weight:300;
+    text-transform:none;
+    letter-spacing:.02em;
+    font-size:15px;
+    color:var(--ink-dim);
+  }
+
+  /* CTA row below caption */
+  .hero__cta-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:32px;
+    margin-top: clamp(28px, 4vh, 48px);
+    flex-wrap:wrap;
+  }
+  .hero__cta{
+    display:inline-flex; align-items:center; gap:18px;
+    font-family:var(--f-body);
+    font-size:13px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--ink);
+    padding:18px 0;
+    position:relative;
+    transition: gap .3s ease, color .3s ease;
+  }
+  .hero__cta::before{
+    content:""; position:absolute; left:0; bottom:0; height:1px; width:100%;
+    background:var(--ink);
+    transform-origin:left;
+    transition: background .3s ease;
+  }
+  .hero__cta .arrow{
+    display:inline-block;
+    width:42px; height:1px;
+    background:currentColor;
+    position:relative;
+  }
+  .hero__cta .arrow::after{
+    content:""; position:absolute; right:-1px; top:-4px;
+    width:9px; height:9px;
+    border-right:1px solid currentColor;
+    border-bottom:1px solid currentColor;
+    transform:rotate(-45deg);
+  }
+  .hero__cta:hover{ gap:28px; color:var(--accent); }
+  .hero__cta:hover::before{ background:var(--accent); }
+
+  .hero__roles{
+    display:flex;
+    flex-wrap:wrap;
+    gap: clamp(14px, 2vw, 32px);
+    align-items:baseline;
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-weight:400;
+    font-size: clamp(14px, 1.2vw, 17px);
+    color:var(--ink-dim);
+    list-style:none; padding:0; margin:0;
+  }
+  .hero__roles .sep{
+    display:inline-block;
+    width:5px; height:5px;
+    background:var(--accent);
+    border-radius:50%;
+    transform:translateY(-3px);
+  }
+
+  /* =========================================================
+     ABOUT
+     ========================================================= */
+  .about{
+    background:var(--bg);
+  }
+  .about__grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(40px, 6vw, 96px);
+    align-items:center;
+  }
+  @media (max-width:980px){
+    .about__grid{ grid-template-columns:1fr; gap:48px; }
+  }
+
+  /* Editorial side: stat block + signature quote (replaces polaroid collage) */
+  .about__side{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:32px;
+    padding-left: clamp(0px, 3vw, 48px);
+    border-left:1px solid var(--line);
+  }
+  @media (max-width:980px){
+    .about__side{ border-left:0; padding-left:0; border-top:1px solid var(--line); padding-top:36px; }
+  }
+  .about__stats{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 24px;
+  }
+  .about__stat .num{
+    font-family:var(--f-display);
+    font-size: clamp(48px, 6vw, 84px);
+    line-height:.9;
+    color:var(--ink);
+    letter-spacing:-.01em;
+  }
+  .about__stat .num .accent-dot{ color:var(--accent); }
+  .about__stat .label{
+    display:block;
+    margin-top:10px;
+    font-size:11px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--ink-mute);
+    line-height:1.5;
+  }
+  .about__signature{
+    margin-top:8px;
+    padding-top:28px;
+    border-top:1px solid var(--line);
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .about__quote{
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-weight:300;
+    font-size: clamp(20px, 2vw, 28px);
+    line-height:1.3;
+    color:var(--ink);
+    max-width:24ch;
+    margin:0;
+  }
+  .about__quote::before{
+    content:"“";
+    color:var(--accent);
+    font-size:1.4em;
+    line-height:0;
+    margin-right:.1em;
+    vertical-align:-0.05em;
+  }
+  .about__sigmeta{
+    text-align:right;
+    font-size:11px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--ink-mute);
+    line-height:1.9;
+  }
+  .about__sigmeta .accent{ color:var(--accent); }
+  .about__title{
+    font-size: clamp(56px, 8vw, 132px);
+    margin: 18px 0 36px;
+  }
+  .about__title .it{
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-weight:300;
+    text-transform:none;
+    color:var(--accent);
+    letter-spacing:-.01em;
+    display:inline-block;
+    margin-left:.1em;
+  }
+  .about__lede{
+    font-family:var(--f-serif);
+    font-weight:300;
+    font-style:italic;
+    color:var(--ink);
+    font-size: clamp(22px, 2.2vw, 30px);
+    line-height:1.35;
+    margin: 0 0 28px;
+    max-width:34ch;
+  }
+  .about__body{
+    color:var(--ink-dim);
+    font-size: 16px;
+    line-height:1.75;
+    max-width: 46ch;
+  }
+  .about__body p + p{ margin-top:1.1em; }
+  .about__body strong{
+    color:var(--ink);
+    font-weight:500;
+    border-bottom:1px solid var(--accent);
+    padding-bottom:1px;
+  }
+
+  /* Polaroid collage — removed in v3 */
+
+  /* =========================================================
+     PROJECTS
+     ========================================================= */
+  .projects{
+    background:var(--bg);
+    border-top:1px solid var(--line);
+  }
+  .projects__head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:48px;
+    margin-bottom: clamp(48px, 7vh, 96px);
+    flex-wrap:wrap;
+  }
+  .projects__title{
+    font-size: clamp(56px, 9vw, 150px);
+    line-height:.88;
+  }
+  .projects__sub{
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-size: clamp(16px, 1.4vw, 20px);
+    color:var(--ink-dim);
+    max-width:36ch;
+  }
+  .projects__grid{
+    display:grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: clamp(56px, 7vw, 88px) clamp(32px, 4vw, 56px);
+  }
+  .project{
+    grid-column: span 12;
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:24px;
+  }
+  /* alternating column spans for editorial rhythm */
+  .project:nth-child(1){ grid-column: 1 / span 7; }
+  .project:nth-child(2){ grid-column: 6 / span 7; }
+  .project:nth-child(3){ grid-column: 1 / span 7; }
+  .project:nth-child(4){ grid-column: 6 / span 7; }
+  @media (max-width:980px){
+    .project,
+    .project:nth-child(1),
+    .project:nth-child(2),
+    .project:nth-child(3),
+    .project:nth-child(4){
+      grid-column: 1 / -1;
+    }
+  }
+
+  .project__media{
+    position:relative;
+    aspect-ratio: 16 / 9;
+    background:#000;
+    overflow:hidden;
+    box-shadow: 0 30px 60px -25px rgba(0,0,0,.8);
+  }
+  .project__media iframe{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    border:0;
+  }
+  .project__media::before{
+    /* hairline frame */
+    content:""; position:absolute; inset:0;
+    border:1px solid var(--line);
+    pointer-events:none;
+    z-index:2;
+  }
+
+  .project__meta{
+    display:flex; justify-content:space-between;
+    align-items:baseline;
+    gap:24px;
+    padding-top:12px;
+    border-top:1px solid var(--line);
+    font-size:11px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--ink-mute);
+  }
+  .project__meta .num{ color:var(--accent); }
+  .project__title{
+    font-family:var(--f-display);
+    text-transform:uppercase;
+    font-size: clamp(28px, 3.6vw, 56px);
+    line-height:.95;
+    letter-spacing:-.005em;
+    margin: 6px 0 14px;
+    color:var(--ink);
+  }
+  .project__role{
+    font-family:var(--f-serif);
+    font-style:italic;
+    color:var(--accent-2);
+    font-size: clamp(15px, 1.2vw, 18px);
+    margin-bottom: 14px;
+  }
+  .project__desc{
+    color:var(--ink-dim);
+    font-size: 15px;
+    line-height:1.7;
+    max-width:54ch;
+  }
+
+  /* =========================================================
+     PROCESS
+     ========================================================= */
+  .process{
+    background: linear-gradient(180deg, var(--bg) 0%, #06050463 60%, var(--bg) 100%);
+    border-top:1px solid var(--line);
+  }
+  .process__head{
+    margin-bottom: clamp(64px, 9vh, 120px);
+    max-width:880px;
+  }
+  .process__title{
+    font-size: clamp(56px, 9vw, 150px);
+    line-height:.88;
+    margin-top:16px;
+  }
+  .process__title .it{
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-weight:300;
+    text-transform:none;
+    color:var(--accent);
+    margin-left:.12em;
+  }
+  .process__lede{
+    font-family:var(--f-serif);
+    font-style:italic;
+    color:var(--ink-dim);
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height:1.5;
+    max-width:60ch;
+    margin-top: 28px;
+  }
+
+  .process__list{
+    display:flex;
+    flex-direction:column;
+    gap: clamp(72px, 12vh, 140px);
+  }
+
+  .pblock{
+    display:grid;
+    grid-template-columns: 0.9fr 2.1fr;
+    gap: clamp(32px, 5vw, 80px);
+    align-items:flex-start;
+  }
+  @media (max-width:900px){
+    .pblock{ grid-template-columns:1fr; gap:36px; }
+  }
+
+  .pblock__label{
+    position:sticky; top: 100px;
+  }
+  @media (max-width:900px){ .pblock__label{ position:static; } }
+  .pblock__num{
+    font-family:var(--f-display);
+    font-size: clamp(96px, 12vw, 200px);
+    line-height:.85;
+    color:transparent;
+    -webkit-text-stroke: 1px var(--accent);
+    text-stroke: 1px var(--accent);
+    letter-spacing:-.02em;
+    margin-bottom: 18px;
+  }
+  .pblock__pname{
+    font-family:var(--f-display);
+    text-transform:uppercase;
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height:1;
+    margin-bottom:10px;
+    color:var(--ink);
+  }
+  .pblock__pmeta{
+    font-family:var(--f-serif);
+    font-style:italic;
+    color:var(--ink-dim);
+    font-size: 16px;
+  }
+
+  /* Timeline */
+  .timeline{
+    position:relative;
+    padding-left:36px;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:6px; top:6px; bottom:6px;
+    width:1px;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--accent) 8%, var(--line) 100%);
+  }
+  .phase{
+    position:relative;
+    padding: 0 0 36px;
+  }
+  .phase:last-child{ padding-bottom:0; }
+  .phase::before{
+    content:"";
+    position:absolute;
+    left:-36px; top:8px;
+    width:13px; height:13px;
+    background:var(--bg);
+    border:1px solid var(--accent);
+    border-radius:50%;
+    transition: background .3s ease, transform .3s ease;
+  }
+  .phase:hover::before{ background:var(--accent); transform:scale(1.15); }
+  .phase__head{
+    display:flex; align-items:baseline; gap:14px;
+    margin-bottom:10px;
+  }
+  .phase__step{
+    font-family:var(--f-display);
+    font-size:14px;
+    letter-spacing:.28em;
+    color:var(--accent);
+  }
+  .phase__name{
+    font-family:var(--f-display);
+    text-transform:uppercase;
+    font-size: clamp(20px, 2vw, 26px);
+    line-height:1.1;
+    letter-spacing:.01em;
+    color:var(--ink);
+  }
+  .phase__body{
+    color:var(--ink-dim);
+    font-size:15px;
+    line-height:1.7;
+    max-width:58ch;
+  }
+
+  /* =========================================================
+     CONTACT
+     ========================================================= */
+  .contact{
+    background:var(--bg);
+    border-top:1px solid var(--line);
+    padding-block: clamp(100px, 16vh, 200px);
+    text-align:center;
+    overflow:hidden;
+    position:relative;
+  }
+  .contact::before{
+    content:"";
+    position:absolute;
+    left:50%; top:50%;
+    width: 110vmax; height:110vmax;
+    transform:translate(-50%,-50%);
+    background: radial-gradient(circle at center, rgba(217,130,78,.10) 0%, rgba(217,130,78,0) 45%);
+    pointer-events:none;
+  }
+  .contact__inner{ position:relative; z-index:1; }
+  .contact__lede{
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-weight:300;
+    color:var(--ink-dim);
+    font-size: clamp(20px, 1.8vw, 26px);
+    margin-bottom: 20px;
+  }
+  .contact__title{
+    font-size: clamp(72px, 14vw, 220px);
+    line-height:.86;
+    margin-bottom: 48px;
+  }
+  .contact__title .it{
+    font-family:var(--f-serif);
+    font-style:italic;
+    font-weight:300;
+    text-transform:none;
+    color:var(--accent);
+    margin-left:.08em;
+  }
+  .contact__mail{
+    display:inline-block;
+    font-family:var(--f-display);
+    text-transform:uppercase;
+    font-size: clamp(20px, 2.2vw, 30px);
+    letter-spacing:.06em;
+    padding: 22px 4px;
+    position:relative;
+    color:var(--ink);
+    margin-bottom: 56px;
+  }
+  .contact__mail::before,
+  .contact__mail::after{
+    content:""; position:absolute; left:0; right:0; height:1px; background:var(--ink);
+    transition: background .3s ease, transform .4s ease;
+  }
+  .contact__mail::before{ top:0;  transform-origin:left; }
+  .contact__mail::after { bottom:0; transform-origin:right; }
+  .contact__mail:hover{ color:var(--accent); }
+  .contact__mail:hover::before,
+  .contact__mail:hover::after{ background:var(--accent); }
+
+  .contact__socials{
+    display:flex;
+    gap: clamp(20px, 4vw, 56px);
+    justify-content:center;
+    flex-wrap:wrap;
+    list-style:none; padding:0; margin:0;
+  }
+  .contact__socials a{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:12px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    padding:8px 0;
+    border-bottom:1px solid transparent;
+    transition: color .25s ease, border-color .25s ease;
+  }
+  .contact__socials a:hover{
+    color:var(--accent);
+    border-bottom-color:var(--accent);
+  }
+  .contact__socials svg{
+    width:14px; height:14px;
+    fill:currentColor;
+  }
+
+  /* =========================================================
+     FOOTER
+     ========================================================= */
+  footer{
+    border-top:1px solid var(--line);
+    padding: 32px var(--gutter);
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:16px;
+    font-size:11px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--ink-mute);
+  }
+  footer .accent{ color:var(--accent); }
+
+  /* Utility */
+  .visually-hidden{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     NAVIGATION
+     ========================================================= -->
+<header class="nav" id="nav" role="banner">
+  <a href="#hero" class="nav__brand" aria-label="Antonio Gálvez — inicio">
+    Antonio<span class="dot">·</span>Gálvez
+  </a>
+  <nav aria-label="Navegación principal">
+    <ul class="nav__links" id="nav-links">
+      <li><a href="#about">Sobre mí</a></li>
+      <li><a href="#projects">Proyectos</a></li>
+      <li><a href="#process">Proceso</a></li>
+      <li><a href="#contact">Contacto</a></li>
+    </ul>
+  </nav>
+  <button class="nav__toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links">
+    <span></span>
+  </button>
+</header>
+
+<!-- =========================================================
+     HERO — cinematic two-image title reveal
+     ========================================================= -->
+<section class="hero" id="hero" aria-label="Portada">
+  <div class="hero__inner">
+    <figure class="hero__frame reveal">
+      <!-- Clean image, Ken-burns drift -->
+      <img class="hero__layer hero__layer--solo"
+           src="assets/hero-solo.png"
+           alt="Antonio Gálvez en el desierto de Tabernas al atardecer." style="width: 1318px" />
+
+      <!-- Title overlay (HTML text) -->
+      <div class="hero__title">
+        <div class="hero__title-eyebrow">Antonio Gálvez</div>
+        <h1 class="hero__title-main">
+          Portfolio<span class="accent">Audiovisual</span>
+        </h1>
+        <div class="hero__title-sub">
+          Creative Director<span class="dot">·</span>Filmmaker<span class="dot">·</span>Music Video Director
+        </div>
+      </div>
+      <!-- Cinematic accents -->
+      <div class="hero__sweep" aria-hidden="true"></div>
+      <div class="hero__bar hero__bar--top" aria-hidden="true"></div>
+      <div class="hero__bar hero__bar--bot" aria-hidden="true"></div>
+      <div class="hero__tc" aria-hidden="true"><span class="dot"></span>REC · 01:24:07:12</div>
+      <div class="hero__rec" aria-hidden="true">ALMERÍA · ES</div>
+    </figure>
+
+    <div class="hero__caption reveal" data-delay="1">
+      <div class="hero__caption-left">
+        <span class="accent">●</span>
+        <span class="serif-meta">Antonio Gálvez</span>
+        <span>—</span>
+        <span>Showreel 2026</span>
+      </div>
+      <div class="hero__caption-right">
+        <span>Almería</span>
+        <span class="accent">·</span>
+        <span>España</span>
+      </div>
+    </div>
+
+    <div class="hero__cta-row reveal" data-delay="2">
+      <ul class="hero__roles">
+        <li>Creative Director</li>
+        <li><span class="sep" aria-hidden="true"></span></li>
+        <li>Filmmaker</li>
+        <li><span class="sep" aria-hidden="true"></span></li>
+        <li>Music Video Director</li>
+      </ul>
+
+      <a href="#projects" class="hero__cta">
+        <span>Ver proyectos</span>
+        <span class="arrow" aria-hidden="true"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     ABOUT
+     ========================================================= -->
+<section class="about" id="about" aria-labelledby="about-title">
+  <div class="section-num">01 — Sobre mí</div>
+  <div class="wrap">
+    <div class="about__grid">
+      <div class="about__copy">
+        <span class="eyebrow reveal">¿Quién soy?</span>
+        <h2 id="about-title" class="display about__title reveal" data-delay="1">
+          Comunicador<span class="it">visual</span>
+        </h2>
+
+        <p class="about__lede reveal" data-delay="2">
+          Director creativo, fotógrafo, director de imagen, cámara y editor.
+        </p>
+
+        <div class="about__body reveal" data-delay="3">
+          <p>
+            Soy comunicador visual como profesional. Experiencia rica desde la planificación hasta la edición.
+            Rapidez y eficacia en el trabajo. Orientado al mundo de los <strong>videoclips</strong>.
+          </p>
+          <p>
+            Mi proceso se basa en la construcción de un lenguaje audiovisual propio,
+            así como la conexión emocional con el espectador.
+          </p>
+          <p>
+            Mi lema es mantener la <strong>esencia del cliente</strong> por encima de todo.
+          </p>
+        </div>
+      </div>
+
+      <!-- Editorial side: stats + signature quote (replaces the polaroid collage) -->
+      <aside class="about__side reveal" data-delay="2">
+        <div class="about__stats">
+          <div class="about__stat">
+            <div class="num">5<span class="accent-dot">+</span></div>
+            <span class="label">Roles<br/>en plató</span>
+          </div>
+          <div class="about__stat">
+            <div class="num">A<span class="accent-dot">/</span>Z</div>
+            <span class="label">De la idea<br/>al corte final</span>
+          </div>
+          <div class="about__stat">
+            <div class="num">04<span class="accent-dot">.</span></div>
+            <span class="label">Fases<br/>de proceso</span>
+          </div>
+          <div class="about__stat">
+            <div class="num">AL<span class="accent-dot">.</span></div>
+            <span class="label">Base<br/>en Almería</span>
+          </div>
+        </div>
+
+        <div class="about__signature">
+          <p class="about__quote">
+            La esencia del cliente, por encima de todo.
+          </p>
+          <div class="about__sigmeta">
+            <div>Lema</div>
+            <div class="accent">A. G.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     PROJECTS
+     ========================================================= -->
+<section class="projects" id="projects" aria-labelledby="projects-title">
+  <div class="section-num">02 — Proyectos</div>
+  <div class="wrap">
+    <div class="projects__head">
+      <div>
+        <span class="eyebrow reveal">Selección</span>
+        <h2 id="projects-title" class="display projects__title reveal" data-delay="1">
+          Video<span style="color:var(--accent);">clips</span>
+        </h2>
+      </div>
+      <p class="projects__sub reveal" data-delay="2">
+        Cuatro piezas recientes. Click en cualquier vídeo para reproducir.
+      </p>
+    </div>
+
+    <div class="projects__grid">
+
+      <!-- ============== PROJECT 1 ============== -->
+      <article class="project reveal">
+        <div class="project__media">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/mtUqcAf-cM4?rel=0"
+            title="Videoclip — Proyecto 01"
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div>
+          <div class="project__meta">
+            <span><span class="num">01</span> — Videoclip</span>
+            <span>[AÑO]</span>
+          </div>
+          <h3 class="project__title">[Título del videoclip / Artista]</h3>
+          <p class="project__role">Dirección creativa · Cámara · Edición</p>
+          <p class="project__desc">
+            [Breve descripción del proyecto en 1–2 frases.]
+          </p>
+        </div>
+      </article>
+
+      <!-- ============== PROJECT 2 ============== -->
+      <article class="project reveal">
+        <div class="project__media">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/_7iVt_g11L8?rel=0"
+            title="Videoclip — Proyecto 02"
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div>
+          <div class="project__meta">
+            <span><span class="num">02</span> — Videoclip</span>
+            <span>[AÑO]</span>
+          </div>
+          <h3 class="project__title">[Título del videoclip / Artista]</h3>
+          <p class="project__role">Dirección creativa · Cámara · Edición</p>
+          <p class="project__desc">
+            [Breve descripción del proyecto en 1–2 frases.]
+          </p>
+        </div>
+      </article>
+
+      <!-- ============== PROJECT 3 ============== -->
+      <article class="project reveal">
+        <div class="project__media">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/zeKFSYPJXjU?rel=0"
+            title="Videoclip — Proyecto 03"
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div>
+          <div class="project__meta">
+            <span><span class="num">03</span> — Videoclip</span>
+            <span>[AÑO]</span>
+          </div>
+          <h3 class="project__title">[Título del videoclip / Artista]</h3>
+          <p class="project__role">Dirección creativa · Cámara · Edición</p>
+          <p class="project__desc">
+            [Breve descripción del proyecto en 1–2 frases.]
+          </p>
+        </div>
+      </article>
+
+      <!-- ============== PROJECT 4 ============== -->
+      <article class="project reveal">
+        <div class="project__media">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/UMT_r8Nuk60?rel=0"
+            title="Videoclip — Proyecto 04"
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div>
+          <div class="project__meta">
+            <span><span class="num">04</span> — Videoclip</span>
+            <span>[AÑO]</span>
+          </div>
+          <h3 class="project__title">[Título del videoclip / Artista]</h3>
+          <p class="project__role">Dirección creativa · Cámara · Edición</p>
+          <p class="project__desc">
+            [Breve descripción del proyecto en 1–2 frases.]
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     PROCESS — vertical timeline per project, 4 phases each
+     ========================================================= -->
+<section class="process" id="process" aria-labelledby="process-title">
+  <div class="section-num">03 — Proceso</div>
+  <div class="wrap">
+    <header class="process__head">
+      <span class="eyebrow reveal">El proceso</span>
+      <h2 id="process-title" class="display process__title reveal" data-delay="1">
+        Cómo<span class="it">trabajo</span>
+      </h2>
+      <p class="process__lede reveal" data-delay="2">
+        Cuatro fases, cuatro proyectos. Del primer brief hasta el corte final —
+        la misma exigencia editorial, ajustada al pulso de cada artista.
+      </p>
+    </header>
+
+    <div class="process__list">
+
+      <!-- ============== PROCESS 1 ============== -->
+      <article class="pblock reveal">
+        <div class="pblock__label">
+          <div class="pblock__num">01</div>
+          <h3 class="pblock__pname">[Título del videoclip]</h3>
+          <p class="pblock__pmeta">[Artista · Año]</p>
+        </div>
+        <ol class="timeline">
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 01</span>
+              <h4 class="phase__name">Concepto e idea</h4>
+            </div>
+            <p class="phase__body">[Texto del concepto y la idea para este proyecto.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 02</span>
+              <h4 class="phase__name">Preproducción y planificación</h4>
+            </div>
+            <p class="phase__body">[Texto de preproducción y planificación.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 03</span>
+              <h4 class="phase__name">Rodaje</h4>
+            </div>
+            <p class="phase__body">[Texto del rodaje.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 04</span>
+              <h4 class="phase__name">Postproducción y edición</h4>
+            </div>
+            <p class="phase__body">[Texto de postproducción y edición.]</p>
+          </li>
+        </ol>
+      </article>
+
+      <!-- ============== PROCESS 2 ============== -->
+      <article class="pblock reveal">
+        <div class="pblock__label">
+          <div class="pblock__num">02</div>
+          <h3 class="pblock__pname">[Título del videoclip]</h3>
+          <p class="pblock__pmeta">[Artista · Año]</p>
+        </div>
+        <ol class="timeline">
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 01</span>
+              <h4 class="phase__name">Concepto e idea</h4>
+            </div>
+            <p class="phase__body">[Texto del concepto y la idea para este proyecto.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 02</span>
+              <h4 class="phase__name">Preproducción y planificación</h4>
+            </div>
+            <p class="phase__body">[Texto de preproducción y planificación.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 03</span>
+              <h4 class="phase__name">Rodaje</h4>
+            </div>
+            <p class="phase__body">[Texto del rodaje.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 04</span>
+              <h4 class="phase__name">Postproducción y edición</h4>
+            </div>
+            <p class="phase__body">[Texto de postproducción y edición.]</p>
+          </li>
+        </ol>
+      </article>
+
+      <!-- ============== PROCESS 3 ============== -->
+      <article class="pblock reveal">
+        <div class="pblock__label">
+          <div class="pblock__num">03</div>
+          <h3 class="pblock__pname">[Título del videoclip]</h3>
+          <p class="pblock__pmeta">[Artista · Año]</p>
+        </div>
+        <ol class="timeline">
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 01</span>
+              <h4 class="phase__name">Concepto e idea</h4>
+            </div>
+            <p class="phase__body">[Texto del concepto y la idea para este proyecto.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 02</span>
+              <h4 class="phase__name">Preproducción y planificación</h4>
+            </div>
+            <p class="phase__body">[Texto de preproducción y planificación.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 03</span>
+              <h4 class="phase__name">Rodaje</h4>
+            </div>
+            <p class="phase__body">[Texto del rodaje.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 04</span>
+              <h4 class="phase__name">Postproducción y edición</h4>
+            </div>
+            <p class="phase__body">[Texto de postproducción y edición.]</p>
+          </li>
+        </ol>
+      </article>
+
+      <!-- ============== PROCESS 4 ============== -->
+      <article class="pblock reveal">
+        <div class="pblock__label">
+          <div class="pblock__num">04</div>
+          <h3 class="pblock__pname">[Título del videoclip]</h3>
+          <p class="pblock__pmeta">[Artista · Año]</p>
+        </div>
+        <ol class="timeline">
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 01</span>
+              <h4 class="phase__name">Concepto e idea</h4>
+            </div>
+            <p class="phase__body">[Texto del concepto y la idea para este proyecto.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 02</span>
+              <h4 class="phase__name">Preproducción y planificación</h4>
+            </div>
+            <p class="phase__body">[Texto de preproducción y planificación.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 03</span>
+              <h4 class="phase__name">Rodaje</h4>
+            </div>
+            <p class="phase__body">[Texto del rodaje.]</p>
+          </li>
+          <li class="phase">
+            <div class="phase__head">
+              <span class="phase__step">Fase 04</span>
+              <h4 class="phase__name">Postproducción y edición</h4>
+            </div>
+            <p class="phase__body">[Texto de postproducción y edición.]</p>
+          </li>
+        </ol>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     CONTACT
+     ========================================================= -->
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="section-num">04 — Contacto</div>
+  <div class="wrap contact__inner">
+    <p class="contact__lede reveal">¿Tienes una idea? Hablemos.</p>
+    <h2 id="contact-title" class="display contact__title reveal" data-delay="1">
+      Colab<span class="it">oremos</span>
+    </h2>
+
+    <a href="mailto:[TU EMAIL]" class="contact__mail reveal" data-delay="2">
+      [TU EMAIL]
+    </a>
+
+    <ul class="contact__socials reveal" data-delay="3">
+      <li>
+        <a href="https://instagram.com/[TU @]" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.5 1 .4.4.7.9 1 1.5.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-1 1.5-.4.4-.9.7-1.5 1-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.5-1-.4-.4-.7-.9-1-1.5-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.3-1.8.4-2.2.2-.6.5-1 1-1.5.4-.4.9-.7 1.5-1 .4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2 .4-.5.2-.9.4-1.2.8-.4.4-.6.7-.8 1.2-.1.4-.3 1-.4 2-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2 .2.5.4.9.8 1.2.4.4.7.6 1.2.8.4.1 1 .3 2 .4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2-.4.5-.2.9-.4 1.2-.8.4-.4.6-.7.8-1.2.1-.4.3-1 .4-2 .1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2-.2-.5-.4-.9-.8-1.2-.4-.4-.7-.6-1.2-.8-.4-.1-1-.3-2-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1A4.9 4.9 0 1 1 7.1 12 4.9 4.9 0 0 1 12 7.1zm0 8.1A3.2 3.2 0 1 0 8.8 12 3.2 3.2 0 0 0 12 15.2zm5.1-8.3a1.15 1.15 0 1 1-1.15-1.15 1.15 1.15 0 0 1 1.15 1.15z"/></svg>
+          <span>Instagram <span class="visually-hidden">— </span>@[TU @]</span>
+        </a>
+      </li>
+      <li>
+        <a href="[URL DE TU CANAL]" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6z"/></svg>
+          <span>YouTube</span>
+        </a>
+      </li>
+      <li>
+        <a href="mailto:[TU EMAIL]" aria-label="Email">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 8.1L3.7 7H20.3zM4 8.5V18h16V8.5l-8 5.8z"/></svg>
+          <span>Email</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer>
+  <div>© 2026 Antonio Gálvez <span class="accent">·</span> Almería, España</div>
+  <div>Made on a sun-burnt afternoon <span class="accent">·</span> Tabernas</div>
+</footer>
+
+<!-- =========================================================
+     SCRIPTS
+     ========================================================= -->
+<script>
+(function(){
+  /* ----------------------------------------------------------
+     1) Sticky nav + scroll state
+     ---------------------------------------------------------- */
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    nav.classList.toggle('is-scrolled', window.scrollY > 24);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive:true });
+
+  /* ----------------------------------------------------------
+     2) Mobile nav toggle
+     ---------------------------------------------------------- */
+  const toggle = document.getElementById('nav-toggle');
+  const links  = document.getElementById('nav-links');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  });
+  // close after tap on link
+  links.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* ----------------------------------------------------------
+     3) Scroll reveal (IntersectionObserver)
+     ---------------------------------------------------------- */
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduced && 'IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting){
+          en.target.classList.add('is-in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in'));
+  }
+
+  /* ----------------------------------------------------------
+     4) Active section highlighting in nav
+     ---------------------------------------------------------- */
+  const sections = ['about','projects','process','contact']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+  const navAnchors = Array.from(links.querySelectorAll('a'));
+
+  if ('IntersectionObserver' in window){
+    const ao = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting){
+          const id = en.target.id;
+          navAnchors.forEach(a => {
+            a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(s => ao.observe(s));
+  }
+})();
+</script>
+</body>
+</html>
